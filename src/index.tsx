@@ -1,3 +1,4 @@
-import Grid = require("./Grid");
+import {Grid} from "./Grid";
+import {Column} from "./Column";
 
-export {Grid};
+export {Grid,Column};

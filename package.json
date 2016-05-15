@@ -1,7 +1,7 @@
 {
     "name": "react-extendable-grid",
     "version": "0.1.0",
-    "description": "A simple react grid component that is highly extensible",
+    "description": "A simple react grid component that is highly extendable",
     "main": "./lib/index.js",
     "repository": {
         "type": "git",
