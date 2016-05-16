@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var less = require('gulp-less');
-var print = require('gulp-print');
 var cssmin = require('gulp-cssmin');
 var rename = require("gulp-rename");
 
