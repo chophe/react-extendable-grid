@@ -1,6 +1,9 @@
 import React = require("react");
 import {Column, ColumnProps} from "./Column";
 import {isFunction, isUndefined, extend} from "./utils/helpers";
+import quicksorter = require('quicksorter');
+
+let qsort = quicksorter["default"];
 
 interface Props {
     data?: any[];
@@ -12,13 +15,14 @@ interface Props {
 interface State {
 }
 
-interface FilterInfo {
+interface ColumnInfo {
     filterMethod?: Function;
-    component?: any;
-    onChange?: Function;
-    value?: any;
+    filterComponent?: any;
+    filterOnChange?: Function;
+    filterValue?: any;
+    sortMethod?:(a:any,b:any)=>number;
+    sorted?:boolean;
 }
-
 
 class Grid extends React.Component<Props, State>{
 
@@ -33,7 +37,7 @@ class Grid extends React.Component<Props, State>{
         showFilterBox: false
     }
 
-    filters: { [colIndex: number]: FilterInfo; } = {};
+    columnsInfo: { [colIndex: number]: ColumnInfo; } = {};
 
     constructor(props: Props) {
         super(props);
@@ -48,8 +52,17 @@ class Grid extends React.Component<Props, State>{
 
     render() {
         let props = this.props;
-        let data = props.data || [];
+
         let columns: { props: ColumnProps }[] = props.children;
+
+        let originalData = props.data || [];
+        let data = originalData.map(d=>d);
+        for (let c in this.columnsInfo) {
+            if(this.columnsInfo[c].sorted){
+                qsort(data,this.columnsInfo[c].sortMethod);
+                break;
+            }
+        }
 
         let {containerClassName, tableClassName} = props;
         if (isUndefined(containerClassName) && isUndefined(tableClassName)) {
@@ -63,30 +76,40 @@ class Grid extends React.Component<Props, State>{
                     <tr>
                         {columns.map((c, colIndex) => {
 
-                            if (!(colIndex in this.filters)) {
-                                let filterInfo: FilterInfo = {};
-                                filterInfo.onChange = (v) => {
+                            // TODO: move to componentWillMount && componentWillReceiveProps
+                            if (!(colIndex in this.columnsInfo)) {
+                                let columnInfo: ColumnInfo = {};
+                                columnInfo.filterOnChange = (v) => {
                                     // TODO: if the typeof v is SyntheticEvent object then it will be null, extending it will prevent the bug, maybe there is some other way
-                                    filterInfo.value = typeof v == 'object' ? extend(v) : v;
+                                    columnInfo.filterValue = typeof v == 'object' ? extend(v) : v;
                                     this.forceUpdate();
                                 }
                                 if (isUndefined(c.props.filterComponent)) {
-                                    filterInfo.component = React.createElement('input', {
-                                        onChange: (e: any) => filterInfo.onChange(e.target.value)
+                                    columnInfo.filterComponent = React.createElement('input', {
+                                        onChange: (e: any) => columnInfo.filterOnChange(e.target.value)
                                     });
                                 }
                                 else {
                                     var newProps = extend(c.props.filterComponent.props,{
-                                        onChange: (v: any) => filterInfo.onChange(v)
+                                        onChange: (v: any) => columnInfo.filterOnChange(v)
                                     });
-                                    filterInfo.component = React.cloneElement(c.props.filterComponent, newProps, c.props.filterComponent.children);
+                                    columnInfo.filterComponent = React.cloneElement(c.props.filterComponent, newProps, c.props.filterComponent.children);
                                 }
-                                filterInfo.filterMethod = c.props.filterMethod;
-                                this.filters[colIndex] = filterInfo;
+                                columnInfo.filterMethod = c.props.filterMethod;
+                                columnInfo.sorted = false;
+                                columnInfo.sortMethod = c.props.sortMethod;
+                                this.columnsInfo[colIndex] = columnInfo;
                             }
                             return <th key={colIndex}>
                                 <div>{c.props.title}</div>
-                                {this.filters[colIndex].component}
+                                {this.columnsInfo[colIndex].filterComponent}
+                                <button onClick={()=>{
+                                    for (let c in this.columnsInfo) {
+                                        this.columnsInfo[c].sorted = false;
+                                    }
+                                    this.columnsInfo[colIndex].sorted = true;
+                                    this.forceUpdate();
+                                }}>sort</button>
                             </th>
                         }) }
                     </tr>
@@ -104,10 +127,10 @@ class Grid extends React.Component<Props, State>{
                                 {this.resolveChild(c.props.children, d, rowIndex) }
                             </td>);
 
-                            let filter = this.filters[colIndex];
-                            if (isUndefined(filter.filterMethod) == false &&
-                                filter.value &&
-                                filter.filterMethod(d, filter.value) == false) {
+                            let columnsInfo = this.columnsInfo[colIndex];
+                            if (isUndefined(columnsInfo.filterMethod) == false &&
+                                columnsInfo.filterValue &&
+                                columnsInfo.filterMethod(d, columnsInfo.filterValue) == false) {
                                 doRenderRow = false;
                             }
                         });

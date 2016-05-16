@@ -1,10 +1,12 @@
 import React = require("react");
+import qsort = require("quicksorter");
 
 interface Props{
     children?:any;
     title?:string;
     filterMethod?:Function;
     filterComponent?:any;
+    sortMethod?:(a:any,b:any)=>number;
 }
 interface State{
 

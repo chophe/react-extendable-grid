@@ -9,11 +9,11 @@ interface Person {
 
 let data: Person[] = [
     {
-        name: 'raoof',
+        name: 'raoof 1',
         age: 28
     },
     {
-        name: 'raoof',
+        name: 'raoof 2',
         age: 19
     },
     {
@@ -31,7 +31,8 @@ ReactDom.render(
         </Column>
         <Column title="Age"
             filterComponent={<input type="checkbox"/>}
-            filterMethod={(p: Person, e) => e.target.checked ? p.age > 20 : p.age <= 20}>
+            filterMethod={(p: Person, e) => e.target.checked ? p.age > 20 : p.age <= 20}
+            sortMethod={(a: Person, b: Person) => a.age < b.age ? -1 : a.age > b.age ? 1 : 0}>
             {(p: Person) => p.age}
         </Column>
         <Column title="Static" filterComponent={<input type="checkbox"/>}>
