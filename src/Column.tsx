@@ -3,6 +3,8 @@ import React = require("react");
 interface Props{
     children?:any;
     title?:string;
+    filterMethod?:Function;
+    filterComponent?:any;
 }
 interface State{
 
