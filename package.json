@@ -1,46 +1,56 @@
 {
-    "name": "react-extendable-grid",
-    "version": "0.1.0",
-    "description": "A simple react grid component that is highly extendable",
-    "main": "./lib/index.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ra0o0f/react-extendable-grid.git"
-    },
-    "keywords": [
-        "react",
-        "component",
-        "grid",
-        "typescript"
-    ],
-    "author": {
-        "name": "raoof hojat"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/ra0o0f/react-extendable-grid/issues"
-    },
-    "homepage": "https://github.com/ra0o0f/react-extendable-grid",
-    "files": [
-        "dist/",
-        "lib/"
-    ],
-    "scripts": {
-        "webpack": "rimraf dist/* && webpack --config ./build/webpack.config.prod.js",
-        "tsc": "rimraf lib/* && tsc",
-        "build": "npm run tsc && npm run webpack",
-        "example": "webpack --config ./build/webpack.config.dev.js"
-    },
-    "dependencies": {
-        "react": "^15.0.2",
-        "react-dom": "^15.0.2"
-    },
-    "devDependencies": {
-        "rimraf": "^2.5.2",
-        "source-map-loader": "^0.1.5",
-        "ts-loader": "^0.8.2",
-        "typescript": "^1.8.10",
-        "webpack": "^1.13.0",
-        "webpack-dev-server": "^1.14.1"
-    }
+  "name": "react-extendable-grid",
+  "version": "0.1.0",
+  "description": "A simple react grid component that is highly extendable",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ra0o0f/react-extendable-grid.git"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "grid",
+    "typescript"
+  ],
+  "author": {
+    "name": "raoof hojat"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ra0o0f/react-extendable-grid/issues"
+  },
+  "homepage": "https://github.com/ra0o0f/react-extendable-grid",
+  "files": [
+    "dist/",
+    "lib/"
+  ],
+  "scripts": {
+    "webpack": "rimraf dist/* && webpack --config ./build/webpack.config.prod.js",
+    "tsc": "rimraf lib/* && tsc",
+    "themes": "gulp themes --gulpfile ./build/gulpfile.js",
+    "build": "npm run tsc && npm run webpack && npm run themes",
+    "example": "webpack --config ./build/webpack.config.dev.js"
+  },
+  "dependencies": {
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2"
+  },
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-less": "^3.1.0",
+    "gulp-rename": "^1.2.2",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "rimraf": "^2.5.2",
+    "source-map-loader": "^0.1.5",
+    "style-loader": "^0.13.1",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
+  }
 }

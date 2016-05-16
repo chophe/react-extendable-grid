@@ -27,7 +27,7 @@ return webpackJsonp([0],{
 	        age: 29
 	    }
 	];
-	ReactDom.render(React.createElement(index_tsx_1.Grid, null, React.createElement(index_tsx_1.Column, null, function (p) { return p.name; }), React.createElement(index_tsx_1.Column, null, function (p) { return p.age; })), document.getElementById("react-root"));
+	ReactDom.render(React.createElement(index_tsx_1.Grid, {data: data}, React.createElement(index_tsx_1.Column, {title: "Name"}, function (p) { return p.name; }), React.createElement(index_tsx_1.Column, {title: "Age"}, function (p) { return p.age; }), React.createElement(index_tsx_1.Column, {title: "Static"}, "static value")), document.getElementById("react-root"));
 
 
 /***/ },
@@ -36,10 +36,10 @@ return webpackJsonp([0],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Grid = __webpack_require__(169);
-	exports.Grid = Grid;
-	var Column = __webpack_require__(170);
-	exports.Column = Column;
+	var Grid_1 = __webpack_require__(169);
+	exports.Grid = Grid_1.Grid;
+	var Column_1 = __webpack_require__(171);
+	exports.Column = Column_1.Column;
 
 
 /***/ },
@@ -54,21 +54,29 @@ return webpackJsonp([0],{
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(1);
+	var helpers_1 = __webpack_require__(170);
 	var Grid = (function (_super) {
 	    __extends(Grid, _super);
 	    function Grid(props) {
 	        _super.call(this, props);
 	    }
+	    Grid.prototype.resolveChild = function (child, data, rowIndex) {
+	        if (helpers_1.isFunction(child))
+	            return child(data, rowIndex);
+	        else
+	            return child;
+	    };
 	    Grid.prototype.render = function () {
+	        var _this = this;
 	        var props = this.props;
 	        var data = props.data || [];
 	        var columns = props.children;
-	        console.log(columns[0].props.children);
-	        return React.createElement("table", null, React.createElement("tbody", null, data.map(function (d, rowIndex) {
-	            console.log('rowIndex', rowIndex);
+	        return React.createElement("table", null, React.createElement("thead", null, React.createElement("tr", null, columns.map(function (c, colIndex) {
+	            return React.createElement("th", {key: colIndex}, c.props.title);
+	        }))), React.createElement("tbody", null, data.map(function (d, rowIndex) {
 	            var columnsContents = [];
 	            columns.map(function (c, colIndex) {
-	                columnsContents.push(c.props.children(c, rowIndex));
+	                columnsContents.push(React.createElement("td", {key: colIndex}, _this.resolveChild(c.props.children, d, rowIndex)));
 	            });
 	            return React.createElement("tr", {key: rowIndex}, columnsContents);
 	        })));
@@ -76,12 +84,26 @@ return webpackJsonp([0],{
 	    Grid.propTypes = {};
 	    return Grid;
 	}(React.Component));
-	module.exports = Grid;
+	exports.Grid = Grid;
 
 
 /***/ },
 
 /***/ 170:
+/***/ function(module, exports) {
+
+	"use strict";
+	// from http://stackoverflow.com/a/7356528
+	var isFunction = function (f) {
+	    var getType = {};
+	    return f && getType.toString.call(f) === '[object Function]';
+	};
+	exports.isFunction = isFunction;
+
+
+/***/ },
+
+/***/ 171:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -102,7 +124,7 @@ return webpackJsonp([0],{
 	    Column.propTypes = {};
 	    return Column;
 	}(React.Component));
-	module.exports = Column;
+	exports.Column = Column;
 
 
 /***/ }

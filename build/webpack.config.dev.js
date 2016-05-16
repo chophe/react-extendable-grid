@@ -2,11 +2,13 @@ var externals = require('./externals');
 var path = require('path');
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var config = {
     entry: {
         'app': './example/src/index.tsx',
-        'vendors': Object.keys(externals)
+        'vendors': Object.keys(externals),
+        'styles':'./themes/react-extendable-grid.less'
     },
     output: {
         path: path.join(__dirname, '../example'),
@@ -25,6 +27,9 @@ var config = {
         loaders: [{
             test: /\.tsx?$/,
             loader: "ts-loader"
+        }, {
+            test: /\.less$/,
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
         }],
 
         preLoaders: [{
@@ -37,7 +42,8 @@ var config = {
         new webpack.optimize.CommonsChunkPlugin({
             name: "vendors",
             minChunks: Infinity
-        })
+        }),
+        new ExtractTextPlugin("[name].css")
     ]
 };
 
