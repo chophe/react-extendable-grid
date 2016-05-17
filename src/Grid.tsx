@@ -48,7 +48,7 @@ class Grid extends React.Component<Props, State>{
             return child(data, rowIndex);
         else
             return child;
-    }
+    }//▼▲
 
     render() {
         let props = this.props;
@@ -103,13 +103,13 @@ class Grid extends React.Component<Props, State>{
                             return <th key={colIndex}>
                                 <div>{c.props.title}</div>
                                 {this.columnsInfo[colIndex].filterComponent}
-                                <button onClick={()=>{
+                                <div onClick={()=>{
                                     for (let c in this.columnsInfo) {
                                         this.columnsInfo[c].sorted = false;
                                     }
                                     this.columnsInfo[colIndex].sorted = true;
                                     this.forceUpdate();
-                                }}>sort</button>
+                                }}>▼</div>
                             </th>
                         }) }
                     </tr>

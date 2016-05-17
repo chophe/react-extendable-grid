@@ -19,11 +19,11 @@ return webpackJsonp([0],{
 	var index_tsx_1 = __webpack_require__(168);
 	var data = [
 	    {
-	        name: 'raoof',
+	        name: 'raoof 1',
 	        age: 28
 	    },
 	    {
-	        name: 'raoof',
+	        name: 'raoof 2',
 	        age: 19
 	    },
 	    {
@@ -59,7 +59,8 @@ return webpackJsonp([0],{
 	};
 	var React = __webpack_require__(1);
 	var helpers_1 = __webpack_require__(170);
-	var qsort = __webpack_require__(171);
+	var quicksorter = __webpack_require__(171);
+	var qsort = quicksorter["default"];
 	var Grid = (function (_super) {
 	    __extends(Grid, _super);
 	    function Grid(props) {
@@ -115,7 +116,13 @@ return webpackJsonp([0],{
 	                columnInfo_1.sortMethod = c.props.sortMethod;
 	                _this.columnsInfo[colIndex] = columnInfo_1;
 	            }
-	            return React.createElement("th", {key: colIndex}, React.createElement("div", null, c.props.title), _this.columnsInfo[colIndex].filterComponent);
+	            return React.createElement("th", {key: colIndex}, React.createElement("div", null, c.props.title), _this.columnsInfo[colIndex].filterComponent, React.createElement("button", {onClick: function () {
+	                for (var c_1 in _this.columnsInfo) {
+	                    _this.columnsInfo[c_1].sorted = false;
+	                }
+	                _this.columnsInfo[colIndex].sorted = true;
+	                _this.forceUpdate();
+	            }}, "sort"));
 	        }))), React.createElement("tbody", null, data.map(function (d, rowIndex) {
 	            var doRenderRow = true;
 	            var columnsContents = [];

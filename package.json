@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "webpack": "rimraf dist/* && webpack --config ./build/webpack.config.prod.js",
-    "tsc": "rimraf lib/* && tsc",
+    "tsc": "rimraf lib/* && gulp ts --gulpfile ./build/gulpfile.js",
     "themes": "gulp themes --gulpfile ./build/gulpfile.js",
     "build": "npm run tsc && npm run webpack && npm run themes",
     "example": "webpack --config ./build/webpack.config.dev.js"
@@ -37,13 +37,15 @@
     "react": "^15.0.2",
     "react-dom": "^15.0.2"
   },
-  "devDependencies": {
+  "devDependencies": {  
+    "gulp-ignore": "^2.0.1",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-cssmin": "^0.1.7",
     "gulp-less": "^3.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-typescript": "^2.13.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "rimraf": "^2.5.2",
